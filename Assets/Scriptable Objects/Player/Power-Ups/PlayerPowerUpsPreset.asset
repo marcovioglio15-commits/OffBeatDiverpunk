@@ -63034,7 +63034,7 @@ MonoBehaviour:
         stackable:
           maxAcquisitions: 0
     stealProtected: 1
-  primaryActivePowerUpId: Active_ChargeShot
+  primaryActivePowerUpId: Active_Shotgun
   secondaryActivePowerUpId: 
   equippedPassivePowerUpIds: []
   passiveTools:
