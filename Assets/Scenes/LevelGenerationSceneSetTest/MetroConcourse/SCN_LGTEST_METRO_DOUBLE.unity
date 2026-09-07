@@ -280,6 +280,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_LAYOUT_LGTEST_METRO_DOUBLE
       objectReference: {fileID: 0}
+    - target: {fileID: 5864803560337781067, guid: ad4f264a9bdfa5b41878b868ee714f1c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 14.45
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
