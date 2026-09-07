@@ -113,6 +113,12 @@
 		<property name="volume">
 			<value>-15.5</value>
 		</property>
+		<property name="pitch">
+			<value>-0.699999988</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{6b728374-037d-4560-8a06-4658fa29547a}</destination>
+		</relationship>
 		<relationship name="audioFile">
 			<destination>{cb966881-1640-461e-b4b9-cb62b2785050}</destination>
 		</relationship>
@@ -141,15 +147,16 @@
 	<object class="MixerBusFader" id="{ff943cd5-762a-4540-8ab0-72b1ae17fde0}" />
 	<object class="DistortionEffect" id="{0fac6490-2f7d-440d-a77e-ae4025ca2a1e}">
 		<property name="level">
-			<value>0.904999971</value>
+			<value>0.930000007</value>
 		</property>
 	</object>
 	<object class="FlangerEffect" id="{84fef20f-bade-43bf-aba0-9616ebdac3c2}">
 		<property name="rate">
-			<value>0.620000005</value>
+			<value>0.419999987</value>
 		</property>
 		<relationship name="modulators">
-			<destination>{4a634154-bece-4220-b12c-1ab740ab106b}</destination>
+			<destination>{65fced76-34ff-43e8-aa68-f39b9d262140}</destination>
+			<destination>{4b884b3c-bd84-483d-8198-fc641a7febc7}</destination>
 		</relationship>
 	</object>
 	<object class="SFXReverbEffect" id="{bd92646c-7a33-4c5d-bd03-899efbb21c8e}">
@@ -178,12 +185,28 @@
 			<value>680</value>
 		</property>
 	</object>
-	<object class="RandomizerModulator" id="{4a634154-bece-4220-b12c-1ab740ab106b}">
+	<object class="RandomizerModulator" id="{6b728374-037d-4560-8a06-4658fa29547a}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>3.125</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{65fced76-34ff-43e8-aa68-f39b9d262140}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>rate</value>
 		</property>
 		<property name="amount">
-			<value>29</value>
+			<value>53.5</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{4b884b3c-bd84-483d-8198-fc641a7febc7}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>delay</value>
+		</property>
+		<property name="amount">
+			<value>58.5</value>
 		</property>
 	</object>
 </objects>
