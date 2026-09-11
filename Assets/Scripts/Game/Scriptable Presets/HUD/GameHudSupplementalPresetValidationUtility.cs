@@ -120,6 +120,14 @@ public static class GameHudSupplementalPresetValidationUtility
         if (!settings.IsEnabled)
             return;
 
+        // A delayed freeze needs visible final content; empty messages release the gate immediately.
+        if (settings.DelayVictoryTimeFreeze && string.IsNullOrWhiteSpace(
+                settings.UseFinalWaveOverride ? settings.FinalWaveContent : settings.Content))
+            warnings.Add("Delay Victory Time Freeze needs visible room-clear content; empty content freezes immediately.");
+
+        if (!settings.UseUnscaledTime && !settings.DelayVictoryTimeFreeze && settings.UseFinalWaveOverride)
+            warnings.Add("The terminal announcement uses unscaled time during the immediate victory freeze so it can finish.");
+
         if (string.IsNullOrWhiteSpace(settings.Content))
             warnings.Add("Room Clear Announcement content is empty, so no visible message will be presented.");
         else if (Encoding.UTF8.GetByteCount(settings.Content) > FixedString512Bytes.UTF8MaxLengthInBytes)

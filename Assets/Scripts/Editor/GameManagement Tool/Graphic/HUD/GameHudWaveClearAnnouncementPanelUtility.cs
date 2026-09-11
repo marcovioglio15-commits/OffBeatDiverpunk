@@ -83,6 +83,16 @@ public static class GameHudWaveClearAnnouncementPanelUtility
 
         Foldout finalWave = CreateFoldout("Terminal Boss Room",
                                           "Overrides content, motion timing, and audio when the final Boss room is cleared.");
+        PropertyField delayFreezeField = AddProperty(finalWave, serializedObject,
+                                                      prefix + "delayVictoryTimeFreeze", "Delay Victory Time Freeze");
+        PropertyField freezeInputField = AddProperty(finalWave, serializedObject,
+                                                      prefix + "freezePlayerInputDuringVictoryDelay",
+                                                      "Freeze Player Input During Delay");
+        GameHudManagerPresetsPanelUtility.TrackConditionalVisibility(delayFreezeField,
+                                                                    freezeInputField,
+                                                                    serializedObject,
+                                                                    prefix + "delayVictoryTimeFreeze",
+                                                                    true);
         PropertyField finalOverrideField = AddProperty(finalWave,
                                                        serializedObject,
                                                        prefix + "useFinalWaveOverride",

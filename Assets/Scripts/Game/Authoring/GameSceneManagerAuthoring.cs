@@ -188,6 +188,7 @@ public sealed class GameSceneManagerAuthoring : MonoBehaviour
         GameSceneManagementBakeUtility.PopulateTransitionBuffer(resolvedPreset, transitionBuffer);
         requestBuffer.Clear();
         GameHudManagerPreset hudPreset = ResolveHudManagerPreset();
+        entityManager.AddComponentData(entity, GameHudCreditsRuntimeConfig.Build(hudPreset));
         entityManager.SetComponentData(entity,
                                        GameHudSupplementalPresetBakeUtility.BuildSettingsNavigationConfig(
                                            hudPreset != null ? hudPreset.SettingsNavigationSettings : null));

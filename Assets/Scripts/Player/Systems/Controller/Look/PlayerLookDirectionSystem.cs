@@ -77,7 +77,7 @@ public partial struct PlayerLookDirectionSystem : ISystem
             float3 playerForward = PlayerControllerMath.NormalizePlanar(math.forward(localTransform.ValueRO.Rotation), new float3(0f, 0f, 1f));
             float3 fallbackDirection = lookState.ValueRO.CurrentDirection;
 
-            if (runOutcomeState.ValueRO.IsFinalized != 0)
+            if (PlayerRunOutcomeRuntimeUtility.IsInputFrozen(in runOutcomeState.ValueRO))
             {
                 lookState.ValueRW.DesiredDirection = PlayerControllerMath.NormalizePlanar(fallbackDirection, playerForward);
                 continue;

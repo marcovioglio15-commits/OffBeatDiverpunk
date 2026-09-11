@@ -78,7 +78,11 @@ public partial struct GameHudWaveClearAnnouncementRequestSystem : ISystem
         presentation.IsFinalWave = useFinalOverride ? (byte)1 : (byte)0;
         presentation.Pending = hasVisibleMessage ? (byte)1 : (byte)0;
         presentation.Active = 0;
-        presentation.BlocksVictoryMenu = useFinalOverride && hasVisibleMessage ? (byte)1 : (byte)0;
+        // The freeze option also waits for standard content when the terminal override is disabled.
+        presentation.BlocksVictoryMenu = progress.LastCompletionWasFinal != 0 && hasVisibleMessage &&
+                                         (useFinalOverride || config.DelayVictoryTimeFreeze != 0)
+            ? (byte)1
+            : (byte)0;
 
         if (!hasVisibleMessage)
         {

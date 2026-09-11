@@ -3,15 +3,8 @@ using Unity.Mathematics;
 using UnityEngine;
 
 /// <summary>
-/// Freezes player-driven runtime state across the dying playback window and the finalized run outcome. Two distinct
-/// phases are handled here:
-/// - Dying: the player took the lethal hit but the run-end UI has not appeared yet. Input/movement/look/shooting/dash
-///   are reset once so the player cannot keep firing or moving from the dead state, and Time.timeScale is pinned to
-///   zero so the rest of the gameplay simulation halts; only the camera shake, damage flash, vignette, rumble and
-///   death animation keep evolving (they switch to unscaled time during dying through
-///   <see cref="PlayerGameplayPauseUtility.ResolveFeedbackDeltaTime"/>).
-/// - Finalized: dying playback elapsed (or victory was reached). On the first finalized frame milestone runtime state
-///   is cancelled and the input reset runs again as a safety net for victory paths that bypass dying.
+/// Freezes time and player control during defeat or finalized outcomes. Victory may keep time and input active
+/// until its room-clear announcement releases the ending panel; progression remains finalized throughout.
 /// </summary>
 [UpdateInGroup(typeof(PlayerControllerSystemGroup), OrderFirst = true)]
 public partial struct PlayerRunOutcomeFreezeSystem : ISystem
@@ -35,7 +28,7 @@ public partial struct PlayerRunOutcomeFreezeSystem : ISystem
 
     /// <summary>
     /// Runs the per-phase freeze. The dying phase only resets active runtime state once; the finalized phase resets
-    /// state once again and pins Time.timeScale to zero every frame so the rest of the simulation cannot keep moving.
+    /// state once again and freezes time, optionally waiting for the victory announcement to finish.
     /// </summary>
     /// <param name="state">Current ECS system state.</param>
     public void OnUpdate(ref SystemState state)
@@ -44,7 +37,7 @@ public partial struct PlayerRunOutcomeFreezeSystem : ISystem
         ComponentLookup<PlayerMilestonePowerUpSelectionState> milestoneSelectionLookup = SystemAPI.GetComponentLookup<PlayerMilestonePowerUpSelectionState>(false);
         ComponentLookup<PlayerMilestoneTimeScaleResumeState> milestoneResumeLookup = SystemAPI.GetComponentLookup<PlayerMilestoneTimeScaleResumeState>(false);
         BufferLookup<PlayerMilestonePowerUpSelectionOfferElement> milestoneOfferLookup = SystemAPI.GetBufferLookup<PlayerMilestonePowerUpSelectionOfferElement>(false);
-        bool anyDyingOrFinalizedRunFound = false;
+        bool freezeTime = false;
 
         foreach ((RefRW<PlayerRunOutcomeState> runOutcomeState,
                   RefRW<PlayerInputState> inputState,
@@ -68,13 +61,29 @@ public partial struct PlayerRunOutcomeFreezeSystem : ISystem
                                      entity,
                                      ref dashLookup);
 
-            // Dying alone is enough to halt gameplay time: the player took the lethal hit, every gameplay simulation
-            // must freeze immediately, and only the feedback presentation systems keep evolving (they switch to unscaled
-            // time during dying).
-            if (runOutcomeState.ValueRO.IsDying != 0 || runOutcomeState.ValueRO.IsFinalized != 0)
-                anyDyingOrFinalizedRunFound = true;
+            // Defeat always freezes immediately, independently of victory presentation settings.
+            if (runOutcomeState.ValueRO.IsDying != 0)
+                freezeTime = true;
 
             if (runOutcomeState.ValueRO.IsFinalized == 0)
+                continue;
+
+            // Resolve the optional victory policy only after the run outcome is committed.
+            bool allowInput = false;
+            bool deferTimeFreeze = runOutcomeState.ValueRO.Outcome == PlayerRunOutcome.Victory &&
+                                   IsVictoryTimeFreezeDeferred(out allowInput);
+
+            if (!deferTimeFreeze)
+                freezeTime = true;
+
+            // Clear milestone UI once before live victory input resumes; progression remains finalized.
+            if (allowInput && runOutcomeState.ValueRO.VictoryInputAllowed == 0)
+                ResetMilestoneRuntimeState(entity, ref milestoneSelectionLookup,
+                                           ref milestoneResumeLookup, ref milestoneOfferLookup);
+
+            runOutcomeState.ValueRW.VictoryInputAllowed = allowInput ? (byte)1 : (byte)0;
+
+            if (allowInput)
                 continue;
 
             ApplyFinalizedFreezeIfNeeded(ref runOutcomeState.ValueRW,
@@ -89,10 +98,29 @@ public partial struct PlayerRunOutcomeFreezeSystem : ISystem
                                           ref milestoneOfferLookup);
         }
 
-        // Pin gameplay time to zero from the first dying frame so every simulation system halts; feedback presentation
-        // systems use unscaled time during dying so they keep evolving (camera shake, flash, vignette, death animation).
-        if (anyDyingOrFinalizedRunFound)
+        // Keep finalization authoritative even while a configured victory announcement is still playing.
+        if (freezeTime && Time.timeScale != 0f)
             Time.timeScale = 0f;
+    }
+
+    /// <summary>
+    /// Reads the shared announcement gate only for finalized victories; missing presentation freezes immediately.
+    /// </summary>
+    /// <param name="allowInput">True when the active delay also permits player control.</param>
+    /// <returns>True while the configured terminal announcement still owns the victory menu.</returns>
+    private bool IsVictoryTimeFreezeDeferred(out bool allowInput)
+    {
+        // Both singleton values must exist before presentation may postpone the global freeze.
+        allowInput = false;
+
+        if (!SystemAPI.TryGetSingleton(out GameHudWaveClearAnnouncementRuntimeConfig config) ||
+            config.DelayVictoryTimeFreeze == 0 ||
+            !SystemAPI.TryGetSingleton(out GameHudWaveClearAnnouncementPresentationState presentation) ||
+            presentation.BlocksVictoryMenu == 0)
+            return false;
+
+        allowInput = config.FreezePlayerInputDuringVictoryDelay == 0;
+        return true;
     }
     #endregion
 

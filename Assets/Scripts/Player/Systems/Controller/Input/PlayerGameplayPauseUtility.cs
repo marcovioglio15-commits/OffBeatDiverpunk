@@ -73,10 +73,10 @@ internal static class PlayerGameplayPauseUtility
     }
 
     /// <summary>
-    /// Resolves whether a finalized run outcome should freeze presentation systems that would otherwise move during transition fade-out.
+    /// Freezes finalized-run presentation while preserving follow-camera motion during an authorized live victory delay.
     /// </summary>
     /// <param name="runOutcomeQuery">Query selecting local player run outcome state.</param>
-    /// <returns>True when at least one player run outcome is finalized.</returns>
+    /// <returns>True when at least one finalized player outcome requires frozen presentation.</returns>
     public static bool IsFinalizedRunOutcomeActive(EntityQuery runOutcomeQuery)
     {
         if (runOutcomeQuery.IsEmptyIgnoreFilter)
@@ -88,7 +88,8 @@ internal static class PlayerGameplayPauseUtility
         {
             for (int index = 0; index < runOutcomeStates.Length; index++)
             {
-                if (runOutcomeStates[index].IsFinalized == 0)
+                if (runOutcomeStates[index].IsFinalized == 0 ||
+                    !PlayerRunOutcomeRuntimeUtility.IsInputFrozen(runOutcomeStates[index]))
                     continue;
 
                 return true;

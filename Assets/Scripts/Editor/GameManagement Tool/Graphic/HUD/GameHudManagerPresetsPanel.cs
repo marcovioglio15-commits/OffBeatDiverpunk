@@ -468,6 +468,9 @@ public sealed class GameHudManagerPresetsPanel
                 GameHudManagerSupplementalPanelUtility.BuildWaveClearAnnouncementSection(sectionContentRoot,
                                                                                            presetSerializedObject);
                 break;
+            case DetailsSectionType.Credits:
+                GameHudCreditsPanelUtility.Build(sectionContentRoot, presetSerializedObject);
+                break;
             case DetailsSectionType.Validation:
                 BuildValidationSection();
                 break;
@@ -484,21 +487,7 @@ public sealed class GameHudManagerPresetsPanel
     /// </summary>
     private void BuildMetadataSection()
     {
-        VisualElement section = CreateSection("Preset Details");
-        AddProperty(section, "presetName", "Preset Name");
-        AddProperty(section, "version", "Version");
-        AddProperty(section, "description", "Description");
-
-        SerializedProperty idProperty = presetSerializedObject.FindProperty("presetId");
-
-        if (idProperty == null)
-            return;
-
-        PropertyField idField = new PropertyField(idProperty, "Preset ID");
-        idField.tooltip = "Stable ID used by Game Management Tool for this HUD preset.";
-        idField.BindProperty(idProperty);
-        idField.SetEnabled(false);
-        section.Add(idField);
+        GameHudManagerPresetsPanelUtility.BuildMetadata(CreateSection("Preset Details"), presetSerializedObject);
     }
 
     /// <summary>
@@ -564,6 +553,7 @@ public sealed class GameHudManagerPresetsPanel
         AddSectionButton(buttonsRoot, DetailsSectionType.ButtonInteractions, "Menu Buttons", 112f);
         AddSectionButton(buttonsRoot, DetailsSectionType.SettingsNavigation, "Settings Navigation", 148f);
         AddSectionButton(buttonsRoot, DetailsSectionType.WaveClearAnnouncement, "Room Clear Text", 132f);
+        AddSectionButton(buttonsRoot, DetailsSectionType.Credits, "Credits", 80f);
         AddSectionButton(buttonsRoot, DetailsSectionType.Validation, "Validation", 92f);
         return buttonsRoot;
     }

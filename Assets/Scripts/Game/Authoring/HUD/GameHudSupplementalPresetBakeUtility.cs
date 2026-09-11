@@ -186,6 +186,8 @@ public static class GameHudSupplementalPresetBakeUtility
             PaintFadeOutDurationSeconds = ResolvePositive(settings.PaintFadeOutDurationSeconds, 0.25f),
             UseUnscaledTime = ToByte(settings.UseUnscaledTime),
             UseFinalWaveOverride = ToByte(settings.UseFinalWaveOverride),
+            DelayVictoryTimeFreeze = ToByte(settings.DelayVictoryTimeFreeze),
+            FreezePlayerInputDuringVictoryDelay = ToByte(settings.FreezePlayerInputDuringVictoryDelay),
             FinalWaveContent = BuildFixedString512(settings.FinalWaveContent),
             FinalWavePresentationMode = settings.FinalWavePresentationMode,
             FinalWaveDirection = settings.FinalWaveDirection,
@@ -519,7 +521,7 @@ public static class GameHudSupplementalPresetBakeUtility
     private static FixedString512Bytes BuildFixedString512(string value)
     {
         FixedString512Bytes result = default;
-        result.CopyFromTruncated(value ?? string.Empty);
+        result.CopyFromTruncated(string.IsNullOrWhiteSpace(value) ? string.Empty : value);
         return result;
     }
 

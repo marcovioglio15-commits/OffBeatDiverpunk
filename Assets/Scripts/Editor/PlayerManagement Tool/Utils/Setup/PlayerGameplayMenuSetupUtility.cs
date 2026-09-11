@@ -132,6 +132,7 @@ public static class PlayerGameplayMenuSetupUtility
         AssignObject(menuController, "settingsMenu", settingsMenu);
         AssignObject(menuController, "eventSystemOverride", eventSystem);
         RefreshMainMenuNavigation(playButton, settingsButton, spawnerToolButton, quitButton);
+        PlayerCreditsMenuSetupUtility.EnsureMenu(menuController, canvas);
         RefreshSelectionController(menuController.gameObject, playButton, eventSystem);
         EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene, MainMenuScenePath);

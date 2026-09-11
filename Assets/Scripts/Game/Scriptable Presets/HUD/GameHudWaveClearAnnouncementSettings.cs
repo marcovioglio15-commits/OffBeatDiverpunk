@@ -105,6 +105,14 @@ public sealed class GameHudWaveClearAnnouncementSettings
     private bool useUnscaledTime = true;
 
     [Header("Terminal Boss Room")]
+    [Tooltip("Keeps gameplay time running after victory until the room-clear message finishes and the victory panel opens. The run result is finalized immediately.")]
+    [SerializeField]
+    private bool delayVictoryTimeFreeze;
+
+    [Tooltip("Freezes player movement, aim, shooting and abilities during the victory announcement while gameplay time continues. Disable to keep player control until the victory panel opens.")]
+    [SerializeField]
+    private bool freezePlayerInputDuringVictoryDelay = true;
+
     [Tooltip("Uses dedicated content, motion timing, and audio when the final Boss room is cleared.")]
     [SerializeField]
     private bool useFinalWaveOverride = true;
@@ -233,6 +241,8 @@ public sealed class GameHudWaveClearAnnouncementSettings
 
     #region Properties
     public bool IsEnabled => isEnabled;
+    public bool DelayVictoryTimeFreeze => delayVictoryTimeFreeze;
+    public bool FreezePlayerInputDuringVictoryDelay => freezePlayerInputDuringVictoryDelay;
     public string Content => content;
     public bool PlayAudioEvent => playAudioEvent;
     public GameAudioEventId AudioEventId => audioEventId;

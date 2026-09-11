@@ -54,11 +54,18 @@ public sealed class GameHudManagerPreset : ScriptableObject
 
     [Tooltip("Input Action-only navigation used by the Settings menu without a virtual mouse.")]
     [SerializeField] private GameHudSettingsNavigationSettings settingsNavigationSettings = new GameHudSettingsNavigationSettings();
+
+    [Header("Credits")]
+    [Tooltip("Button action that closes the authored Credits panel and restores main-menu focus.")]
+    [SerializeField]
+    private string creditsCloseActionId = "UI/CreditsClose";
     #endregion
 
     #endregion
 
     #region Properties
+    public string CreditsCloseActionId => creditsCloseActionId;
+
     public string PresetId
     {
         get

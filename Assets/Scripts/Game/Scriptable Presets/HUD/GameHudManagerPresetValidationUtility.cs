@@ -40,6 +40,11 @@ public static class GameHudManagerPresetValidationUtility
             warnings);
         GameHudSupplementalPresetValidationUtility.ValidateButtonInteractions(preset.ButtonInteractionSettings, warnings);
         GameHudSupplementalPresetValidationUtility.ValidateSettingsNavigation(preset.SettingsNavigationSettings, warnings);
+
+        // Credits uses the same bounded stable-action storage as the other menu input settings.
+        if (string.IsNullOrWhiteSpace(preset.CreditsCloseActionId) ||
+            System.Text.Encoding.UTF8.GetByteCount(preset.CreditsCloseActionId) > Unity.Collections.FixedString64Bytes.UTF8MaxLengthInBytes)
+            warnings.Add("Credits Close Action must select a Button action with an ID that fits the 64-byte ECS field.");
     }
     #endregion
 

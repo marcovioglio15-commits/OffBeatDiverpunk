@@ -66,6 +66,7 @@ public sealed class GameSceneManagerAuthoringBaker : Baker<GameSceneManagerAutho
         GameSceneManagementBakeUtility.PopulateTransitionBuffer(preset, transitionBuffer);
         requestBuffer.Clear();
         GameHudManagerPreset hudPreset = authoring.ResolveHudManagerPreset();
+        AddComponent(entity, GameHudCreditsRuntimeConfig.Build(hudPreset));
         AddComponent(entity,
                      GameHudSupplementalPresetBakeUtility.BuildSettingsNavigationConfig(
                          hudPreset != null ? hudPreset.SettingsNavigationSettings : null));

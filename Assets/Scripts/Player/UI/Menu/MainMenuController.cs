@@ -22,6 +22,10 @@ public sealed class MainMenuController : MonoBehaviour
     [Tooltip("Button that opens the runtime Settings menu.")]
     [SerializeField] private Button settingsButton;
 
+    [Tooltip("Button that opens the authored Credits panel.")]
+    [SerializeField]
+    private Button creditsButton;
+
     [Tooltip("Button that closes the application.")]
     [SerializeField] private Button quitButton;
 
@@ -34,6 +38,10 @@ public sealed class MainMenuController : MonoBehaviour
     [Tooltip("Reusable runtime Settings menu opened from the main menu.")]
     [SerializeField] private SettingsMenuController settingsMenu;
 
+    [Tooltip("Authored empty Credits panel opened above the main menu.")]
+    [SerializeField]
+    private CreditsMenuController creditsMenu;
+
     [Header("Navigation")]
     [Tooltip("Optional EventSystem override used to select the default menu button.")]
     [SerializeField] private EventSystem eventSystemOverride;
@@ -45,6 +53,7 @@ public sealed class MainMenuController : MonoBehaviour
     private Selectable fallbackSelectionAfterUnlock;
     private bool navigationLocked;
     private bool terminalCommandSubmitted;
+    private int overlayClosedFrame = -1;
     #endregion
 
     #endregion
@@ -113,6 +122,12 @@ public sealed class MainMenuController : MonoBehaviour
         if (settingsButton != null)
             settingsButton.onClick.AddListener(HandleSettingsPressed);
 
+        if (creditsButton != null)
+            creditsButton.onClick.AddListener(HandleCreditsPressed);
+
+        if (creditsMenu != null)
+            creditsMenu.MenuClosed += HandleOverlayClosed;
+
         if (quitButton != null)
             quitButton.onClick.AddListener(HandleQuitPressed);
 
@@ -122,7 +137,7 @@ public sealed class MainMenuController : MonoBehaviour
 #endif
 
         if (settingsMenu != null)
-            settingsMenu.MenuClosed += HandleSettingsClosed;
+            settingsMenu.MenuClosed += HandleOverlayClosed;
     }
 
     /// <summary>
@@ -141,6 +156,12 @@ public sealed class MainMenuController : MonoBehaviour
         if (settingsButton != null)
             settingsButton.onClick.RemoveListener(HandleSettingsPressed);
 
+        if (creditsButton != null)
+            creditsButton.onClick.RemoveListener(HandleCreditsPressed);
+
+        if (creditsMenu != null)
+            creditsMenu.MenuClosed -= HandleOverlayClosed;
+
         if (quitButton != null)
             quitButton.onClick.RemoveListener(HandleQuitPressed);
 
@@ -150,7 +171,7 @@ public sealed class MainMenuController : MonoBehaviour
 #endif
 
         if (settingsMenu != null)
-            settingsMenu.MenuClosed -= HandleSettingsClosed;
+            settingsMenu.MenuClosed -= HandleOverlayClosed;
     }
     #endregion
 
@@ -192,7 +213,7 @@ public sealed class MainMenuController : MonoBehaviour
     /// </summary>
     private void HandlePlayPressed()
     {
-        if (GameSceneTransitionRuntimeGuardUtility.ShouldBlockTerminalUiCommand(terminalCommandSubmitted))
+        if (IsCommandBlocked())
             return;
 
         Time.timeScale = 1f;
@@ -212,8 +233,7 @@ public sealed class MainMenuController : MonoBehaviour
     /// </summary>
     private void HandleEnemySpawnerToolPressed()
     {
-        if (navigationLocked ||
-            GameSceneTransitionRuntimeGuardUtility.ShouldBlockTerminalUiCommand(terminalCommandSubmitted))
+        if (IsCommandBlocked())
             return;
 
         if (enemySpawnerToolPanel == null)
@@ -234,8 +254,7 @@ public sealed class MainMenuController : MonoBehaviour
     /// </summary>
     private void HandleSettingsPressed()
     {
-        if (navigationLocked ||
-            GameSceneTransitionRuntimeGuardUtility.ShouldBlockTerminalUiCommand(terminalCommandSubmitted))
+        if (IsCommandBlocked())
             return;
 
         if (settingsMenu == null)
@@ -261,11 +280,29 @@ public sealed class MainMenuController : MonoBehaviour
 #endif
 
     /// <summary>
-    /// Restores main-menu navigation when the Settings overlay reports that it has closed.
+    /// Restores menu focus after an overlay closes and rejects input from that same frame.
     /// </summary>
-    private void HandleSettingsClosed()
+    private void HandleOverlayClosed()
     {
+        overlayClosedFrame = Time.frameCount;
         SetNavigationLocked(false);
+    }
+
+    /// <summary>
+    /// Opens the preauthored Credits overlay while preserving the button to refocus on closure.
+    /// </summary>
+    private void HandleCreditsPressed()
+    {
+        // Reject commands while another overlay or a scene transition owns navigation.
+        if (creditsMenu == null || IsCommandBlocked())
+            return;
+
+        fallbackSelectionAfterUnlock = creditsButton;
+        SetNavigationLocked(true);
+
+        // Restore menu ownership immediately if the configured input cannot close the panel.
+        if (!creditsMenu.Open())
+            SetNavigationLocked(false);
     }
 
     /// <summary>
@@ -301,7 +338,7 @@ public sealed class MainMenuController : MonoBehaviour
     /// </summary>
     private void HandleQuitPressed()
     {
-        if (GameSceneTransitionRuntimeGuardUtility.ShouldBlockTerminalUiCommand(terminalCommandSubmitted))
+        if (IsCommandBlocked())
             return;
 
         LockTerminalCommands();
@@ -310,6 +347,16 @@ public sealed class MainMenuController : MonoBehaviour
     #endregion
 
     #region Helpers
+    /// <summary>
+    /// Rejects commands while an overlay or transition owns input, including the frame an overlay closes.
+    /// </summary>
+    /// <returns>True when a main-menu button must ignore its current activation.</returns>
+    private bool IsCommandBlocked()
+    {
+        return navigationLocked || overlayClosedFrame == Time.frameCount ||
+               GameSceneTransitionRuntimeGuardUtility.ShouldBlockTerminalUiCommand(terminalCommandSubmitted);
+    }
+
     /// <summary>
     /// Applies the compile-time runtime-tool policy before selection and navigation are restored.
     /// </summary>
@@ -339,6 +386,7 @@ public sealed class MainMenuController : MonoBehaviour
     {
         MenuVerticalNavigationUtility.ConfigureCyclic(playButton,
                                                       settingsButton,
+                                                      creditsButton,
                                                       enemySpawnerToolButton,
                                                       quitButton);
     }
@@ -357,6 +405,9 @@ public sealed class MainMenuController : MonoBehaviour
 
         if (settingsButton != null)
             settingsButton.interactable = interactable;
+
+        if (creditsButton != null)
+            creditsButton.interactable = interactable;
 
         if (quitButton != null)
             quitButton.interactable = interactable;

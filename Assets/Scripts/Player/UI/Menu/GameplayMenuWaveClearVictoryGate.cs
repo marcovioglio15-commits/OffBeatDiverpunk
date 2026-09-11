@@ -29,6 +29,7 @@ public sealed class GameplayMenuWaveClearVictoryGate
 
         if (!initialized || !ReferenceEquals(boundWorld, world))
         {
+            Invalidate();
             boundWorld = world;
             presentationQuery = entityManager.CreateEntityQuery(
                 ComponentType.ReadOnly<GameHudWaveClearAnnouncementPresentationState>());
@@ -49,6 +50,10 @@ public sealed class GameplayMenuWaveClearVictoryGate
     /// </summary>
     public void Invalidate()
     {
+        // Dispose the cached query while its owning world is still valid.
+        if (initialized && boundWorld != null && boundWorld.IsCreated)
+            presentationQuery.Dispose();
+
         boundWorld = null;
         presentationQuery = default;
         initialized = false;

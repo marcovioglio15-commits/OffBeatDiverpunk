@@ -10,6 +10,32 @@ internal static class GameHudManagerPresetsPanelUtility
 {
     #region Methods
 
+    #region Metadata
+    /// <summary>
+    /// Builds shared HUD metadata controls while keeping the stable preset ID read-only.
+    /// </summary>
+    /// <param name="root">Details section receiving the metadata fields.</param>
+    /// <param name="serializedPreset">HUD preset edited through the shared draft session.</param>
+    public static void BuildMetadata(VisualElement root, SerializedObject serializedPreset)
+    {
+        GameHudManagerSupplementalPanelUtility.AddProperty(root, serializedPreset, "presetName", "Preset Name");
+        GameHudManagerSupplementalPanelUtility.AddProperty(root, serializedPreset, "version", "Version");
+        GameHudManagerSupplementalPanelUtility.AddProperty(root, serializedPreset, "description", "Description");
+
+        // The identifier participates in references and cannot be edited as ordinary metadata.
+        SerializedProperty idProperty = serializedPreset.FindProperty("presetId");
+
+        if (idProperty == null)
+            return;
+
+        PropertyField idField = new PropertyField(idProperty, "Preset ID");
+        idField.tooltip = "Stable ID used by Game Management Tool for this HUD preset.";
+        idField.BindProperty(idProperty);
+        idField.SetEnabled(false);
+        root.Add(idField);
+    }
+    #endregion
+
     #region Search
     /// <summary>
     /// Checks whether one preset matches the current search text.
@@ -523,5 +549,6 @@ internal enum DetailsSectionType
     PowerUpSummary = 10,
     ButtonInteractions = 11,
     SettingsNavigation = 12,
-    WaveClearAnnouncement = 13
+    WaveClearAnnouncement = 13,
+    Credits = 14
 }

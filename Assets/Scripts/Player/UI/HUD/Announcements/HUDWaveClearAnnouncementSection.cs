@@ -147,6 +147,10 @@ public sealed class HUDWaveClearAnnouncementSection : MonoBehaviour
 
         StopPresentation(true);
         PreparePresentationConfig(presentationState.IsFinalWave != 0);
+        // A terminal message must still finish when the immediate victory freeze stops scaled time.
+        if (presentationState.BlocksVictoryMenu != 0 && baseConfig.DelayVictoryTimeFreeze == 0)
+            presentationConfig.UseUnscaledTime = 1;
+
         StartPresentation(entityManager, presentationState.RequestedVersion);
     }
     #endregion

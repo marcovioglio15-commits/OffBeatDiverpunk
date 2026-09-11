@@ -316,6 +316,8 @@ MonoBehaviour:
     paintHoldDurationSeconds: 1.2
     paintFadeOutDurationSeconds: 1.5
     useUnscaledTime: 1
+    delayVictoryTimeFreeze: 1
+    freezePlayerInputDuringVictoryDelay: 1
     useFinalWaveOverride: 1
     finalWaveContent: AREA CLEARED
     finalWavePresentationMode: 1
@@ -377,6 +379,17 @@ MonoBehaviour:
         hoverSprite: {fileID: 21300000, guid: a18f3607ded915448b5b2fd28f319da1, type: 3}
         pressedSprite: {fileID: 21300000, guid: a18f3607ded915448b5b2fd28f319da1, type: 3}
         disabledSprite: {fileID: 21300000, guid: 0ee889e42b0168b4eab9304e9c7626c7, type: 3}
+        preserveAspect: 1
+        normalColor: {r: 1, g: 1, b: 1, a: 1}
+        hoverColor: {r: 1, g: 1, b: 1, a: 1}
+        pressedColor: {r: 1, g: 1, b: 1, a: 1}
+        disabledColor: {r: 1, g: 1, b: 1, a: 0.45}
+        serializedVersion: 1
+      - buttonId: CreditsButton
+        normalSprite: {fileID: 21300000, guid: 53d6eb3725de4164185265b18768cfdf, type: 3}
+        hoverSprite: {fileID: 21300000, guid: eb3df9aa9c2dbd24a96c5f49e0832656, type: 3}
+        pressedSprite: {fileID: 21300000, guid: eb3df9aa9c2dbd24a96c5f49e0832656, type: 3}
+        disabledSprite: {fileID: 21300000, guid: 53d6eb3725de4164185265b18768cfdf, type: 3}
         preserveAspect: 1
         normalColor: {r: 1, g: 1, b: 1, a: 1}
         hoverColor: {r: 1, g: 1, b: 1, a: 1}
@@ -759,3 +772,4 @@ MonoBehaviour:
     inputDeadzone: 0.55
     repeatDelaySeconds: 0.32
     repeatIntervalSeconds: 0.1
+  creditsCloseActionId: ae82811a-daa7-4c39-8388-8b939a2b5fee

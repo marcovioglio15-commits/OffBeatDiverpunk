@@ -104,3 +104,6 @@ crashlytics-build.properties
 
 # Log files can be ignored.
 fmod_editor.log
+
+# Deployment-only telemetry API secrets. Commit config.example.php instead.
+/Backend/TelemetryApi/private/config.php

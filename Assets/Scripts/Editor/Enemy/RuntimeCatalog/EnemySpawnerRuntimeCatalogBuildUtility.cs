@@ -138,7 +138,6 @@ public static class EnemySpawnerRuntimeCatalogBuildUtility
             GameSceneManagerPreset preset = AssetDatabase.LoadAssetAtPath<GameSceneManagerPreset>(presetPath);
             AddManagedScenePaths(preset, scenePaths, uniqueScenePaths);
         }
-
         scenePaths.Sort(System.StringComparer.Ordinal);
         return scenePaths;
     }

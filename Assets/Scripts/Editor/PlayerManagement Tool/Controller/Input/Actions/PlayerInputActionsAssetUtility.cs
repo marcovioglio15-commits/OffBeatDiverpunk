@@ -76,6 +76,7 @@ public static class PlayerInputActionsAssetUtility
         changed |= EnsureAction(uiMap, "Navigate", InputActionType.PassThrough, "Vector2", AddDefaultUINavigateBindings);
         changed |= EnsureAction(uiMap, "Submit", InputActionType.Button, "Button", AddDefaultUISubmitBindings);
         changed |= EnsureAction(uiMap, "Cancel", InputActionType.Button, "Button", AddDefaultUICancelBindings);
+        changed |= EnsureAction(uiMap, "CreditsClose", InputActionType.Button, "Button", AddDefaultUICancelBindings);
         changed |= EnsureAction(uiMap, "SettingsPreviousTab", InputActionType.Button, "Button", AddDefaultSettingsPreviousTabBindings);
         changed |= EnsureAction(uiMap, "SettingsNextTab", InputActionType.Button, "Button", AddDefaultSettingsNextTabBindings);
         changed |= EnsureAction(uiMap, "SettingsNavigateVertical", InputActionType.PassThrough, "Axis", AddDefaultSettingsVerticalBindings);
@@ -576,6 +577,8 @@ public static class PlayerInputActionsAssetUtility
         AddDefaultUISubmitBindings(submit);
         InputAction cancel = uiMap.AddAction("Cancel", InputActionType.Button, null, null, null, null, "Button");
         AddDefaultUICancelBindings(cancel);
+        InputAction creditsClose = uiMap.AddAction("CreditsClose", InputActionType.Button, null, null, null, null, "Button");
+        AddDefaultUICancelBindings(creditsClose);
         InputAction settingsPreviousTab = uiMap.AddAction("SettingsPreviousTab", InputActionType.Button, null, null, null, null, "Button");
         AddDefaultSettingsPreviousTabBindings(settingsPreviousTab);
         InputAction settingsNextTab = uiMap.AddAction("SettingsNextTab", InputActionType.Button, null, null, null, null, "Button");

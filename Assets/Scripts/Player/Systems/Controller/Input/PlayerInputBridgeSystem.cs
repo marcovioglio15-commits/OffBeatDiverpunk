@@ -145,11 +145,11 @@ public partial struct PlayerInputBridgeSystem : ISystem
                              .WithAll<PlayerControllerConfig>()
                              .WithEntityAccess())
         {
-            bool isFinalized = PlayerRunOutcomeRuntimeUtility.IsFinalized(entity, in runOutcomeLookup);
+            bool inputFrozen = PlayerRunOutcomeRuntimeUtility.IsInputFrozen(entity, in runOutcomeLookup);
 
             if (!assignedLocalInput)
             {
-                if (isFinalized)
+                if (inputFrozen)
                 {
                     ResetInputState(ref inputState.ValueRW, false, false);
                     assignedLocalInput = true;

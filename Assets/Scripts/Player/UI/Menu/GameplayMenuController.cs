@@ -332,6 +332,12 @@ public sealed class GameplayMenuController : MonoBehaviour
         if (GameSceneTransitionRuntimeGuardUtility.ShouldBlockTerminalUiCommand(terminalCommandSubmitted))
             return;
 
+        // A committed outcome owns the ending flow even when victory still permits player movement.
+        if (TryInitializeEcsBindings() && TryResolvePlayerEntity(out Entity playerEntity) &&
+            entityManager.HasComponent<PlayerRunOutcomeState>(playerEntity) &&
+            entityManager.GetComponentData<PlayerRunOutcomeState>(playerEntity).Outcome != PlayerRunOutcome.None)
+            return;
+
         if (IsMilestoneSelectionActive())
         {
             SuppressPauseMenuForMilestoneSelection();

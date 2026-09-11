@@ -374,15 +374,17 @@ public static class GameHudSupplementalSmokeTest
         SerializedObject serializedController = new SerializedObject(controllers[0]);
         Button playButton = serializedController.FindProperty("playButton").objectReferenceValue as Button;
         Button settingsButton = serializedController.FindProperty("settingsButton").objectReferenceValue as Button;
+        Button creditsButton = serializedController.FindProperty("creditsButton").objectReferenceValue as Button;
         Button toolButton = serializedController.FindProperty("enemySpawnerToolButton").objectReferenceValue as Button;
         Button quitButton = serializedController.FindProperty("quitButton").objectReferenceValue as Button;
-        Require(playButton != null && settingsButton != null && toolButton != null && quitButton != null,
+        Require(playButton != null && settingsButton != null && creditsButton != null && toolButton != null && quitButton != null,
                 "Main Menu controller has an incomplete authored button chain.");
         Require(!toolButton.gameObject.activeSelf,
                 "Runtime Spawner Tool button must start inactive until its scripting define is enabled.");
         Require(playButton.navigation.selectOnDown == settingsButton &&
-                settingsButton.navigation.selectOnDown == quitButton &&
-                quitButton.navigation.selectOnUp == settingsButton &&
+                settingsButton.navigation.selectOnDown == creditsButton &&
+                creditsButton.navigation.selectOnDown == quitButton &&
+                quitButton.navigation.selectOnUp == creditsButton &&
                 quitButton.navigation.selectOnDown == playButton,
                 "Main Menu authored navigation does not bypass the inactive runtime tool button.");
 

@@ -194,6 +194,7 @@ public sealed class InputActionSelectionElement : VisualElement
                 defaultActionNameFilter = "Navigate";
                 break;
             case SelectionMode.Shooting:
+            case SelectionMode.UIButton:
                 m_ActionTypeFilter = ActionTypeFilter.Button;
                 m_ControlTypeFilter = "Button";
                 break;
@@ -644,7 +645,8 @@ public sealed class InputActionSelectionElement : VisualElement
         PowerUpContainers = 5,
         UINavigate = 6,
         UISubmit = 7,
-        UICancel = 8
+        UICancel = 8,
+        UIButton = 9
     }
 
     private enum ActionTypeFilter

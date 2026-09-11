@@ -34,6 +34,9 @@ public struct PlayerRunOutcomeState : IComponentData
     public byte IsFinalized;
     public byte RuntimeFreezeApplied;
 
+    [UnityEngine.Tooltip("Allows player control after a committed victory only while its announcement delays the ending panel.")]
+    public byte VictoryInputAllowed;
+
     // Set the first frame the dying input/movement freeze runs so the freeze system only resets state once even though
     // it must keep firing every frame to assert the no-input contract for the rest of the run.
     public byte DyingFreezeApplied;

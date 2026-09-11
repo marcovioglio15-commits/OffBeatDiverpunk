@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Cat On A Skateboard
-  productName: Bombastic Bloodstream Brigade
+  productName: OFF BEAT DIVERPUNK
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -167,9 +167,9 @@ PlayerSettings:
   androidMaxAspectRatio: 2.4
   androidMinAspectRatio: 1
   applicationIdentifier:
-    Android: com.UnityTechnologies.com.unity.template.urpblank
-    Standalone: com.Unity-Technologies.com.unity.template.urp-blank
-    iPhone: com.Unity-Technologies.com.unity.template.urp-blank
+    Android: com.catonaskateboard.offbeatdiverpunk
+    Standalone: com.catonaskateboard.offbeatdiverpunk
+    iPhone: com.catonaskateboard.offbeatdiverpunk
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -858,14 +858,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: NashCore_LongProject
+  metroPackageName: OffBeatDiverpunk
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: NashCore_LongProject
+  metroApplicationDescription: OFF BEAT DIVERPUNK
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0

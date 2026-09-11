@@ -82,6 +82,10 @@ public struct GameHudWaveClearAnnouncementRuntimeConfig : IComponentData
     public float PaintFadeOutDurationSeconds;
     public byte UseUnscaledTime;
     public byte UseFinalWaveOverride;
+    [Tooltip("Defers the victory time freeze while its final room-clear announcement owns the menu gate.")]
+    public byte DelayVictoryTimeFreeze;
+    [Tooltip("Keeps player input frozen while the final room-clear announcement delays the victory time freeze.")]
+    public byte FreezePlayerInputDuringVictoryDelay;
     public FixedString512Bytes FinalWaveContent;
     public GameHudWaveClearAnnouncementPresentationMode FinalWavePresentationMode;
     public GameHudWaveClearAnnouncementDirection FinalWaveDirection;
