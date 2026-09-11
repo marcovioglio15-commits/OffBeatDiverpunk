@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -690}
+  m_AnchoredPosition: {x: 1920, y: -1230}
   m_SizeDelta: {x: 900, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1105145423939983175
@@ -254,7 +254,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -150}
+  m_AnchoredPosition: {x: 1920, y: -150}
   m_SizeDelta: {x: 800, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1185257859716300483
@@ -371,7 +371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4263088728866849979, guid: 44ff31e26b6dde449aaffc7cbec13553, type: 3}
       propertyPath: m_text
-      value: 'Sound Designers : Mayazmaya & Alberto Speziale'
+      value: 'Sound Designers : Maja Milas & Alberto Speziale'
       objectReference: {fileID: 0}
     - target: {fileID: 4284411758960156305, guid: 44ff31e26b6dde449aaffc7cbec13553, type: 3}
       propertyPath: m_AnchorMax.y
@@ -501,7 +501,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4263088728866849979, guid: 44ff31e26b6dde449aaffc7cbec13553, type: 3}
       propertyPath: m_text
-      value: '3D  Artist : Mikko '
+      value: '3D  Artist : Elena ''Mikko'' Striglia'
       objectReference: {fileID: 0}
     - target: {fileID: 4284411758960156305, guid: 44ff31e26b6dde449aaffc7cbec13553, type: 3}
       propertyPath: m_AnchorMax.y
